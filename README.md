@@ -87,3 +87,30 @@ Route::resource('users', UserController::class);
 ```
 
 
+There must be a clashing among Tenancy and Passport.  In App\Providers\RouteServiceProvider.php the api routes are registered as required by Tenancy:
+
+```php
+    protected function mapApiRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
+            Route::middleware('auth:api')
+                ->prefix('api')
+                ->domain($domain)
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
+        }
+    }
+```
+If the middleware('auth:api') is removed, everything works fine except the routes are not protected.
+```php
+    // This works :(
+    protected function mapApiRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
+            Route::prefix('api')
+                ->domain($domain)
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
+        }
+    }
+```
