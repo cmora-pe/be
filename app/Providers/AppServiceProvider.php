@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +16,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Passport::routes(null, ['middleware' => [
+            'universal',
+            InitializeTenancyByDomain::class
+        ]]);
     }
 
     /**
