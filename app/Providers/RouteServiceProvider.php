@@ -28,6 +28,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
+        Route::model('user', User::class);
+
         // $this->mapWebRoutes();
         $this->mapApiRoutes();
 
