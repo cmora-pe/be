@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "d99aec58-7b97-4207-939e-ee39b46df345",
+		"name": "BE test",
+		"description": "Pruebas de la API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var cookie = pm.cookies.get(\"XSRF-TOKEN\");\r",
+									"pm.collectionVariables.set(\"token\", jsonData.access_token);\r",
+									"pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);\r",
+									"pm.collectionVariables.set(\"xsrf_token\", cookie);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"grant_type\": \"password\",\n\t\"client_id\": {{client_id}},\n\t\"client_secret\": \"{{client_secret}}\",\n\t\"username\" : \"cam@people-experts.com\",\n\t\"password\" : \"12345678\",\n\t\"scopes\": \"*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/oauth/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						},
+						"description": "Envio de credenciales y retorna el token para futuras consultas"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNzFlMmQzZDdiOTljNDBkNTZhMzllZjZmMjlkMzNlZDliZjU2ODI5Mjg3MmY3YTY3NDg3YmM5ZjE1NTg4NDExMTk5NTZlNTlmNzY5NDIxOWUiLCJpYXQiOjE2NTA4Nzg5NDguNjgwMTAxLCJuYmYiOjE2NTA4Nzg5NDguNjgwMTA0LCJleHAiOjE2ODI0MTQ5NDguNjU3OTE2LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.SxqvxwJeihfbYA6SD_3aeYD39qjbOC5vbIEwvldiuwzJENWzigCreEJq11mh3fBnGXHtUE9DoztVp2DIeuvcQIm6Yqjh1CB6q7lAOx62o7mmYw6U1Mtg4Mi-FVJp-Mx1Y6_uScqn0h0G0tHtKMy6LTzv5kF-9F5YuCoH2h-DlHoPk5b_89_ImbPiu2WuFQUc4sn9wnX24qiCipZ5I0jf7mFM2Wr5-oqvIshd5K4RLeVzccLDe-_mW4pf2HGtqtjoPFE6HnHEK7r0j0cuJZpJUq9IpW6ajiveU3Epr5LWeeVOjlv7gwd2Jfq05kYHtis73PUsxothPZG6jZqtnm2ImOy1RVy9h2GZcQeiEIP4HJ0UonsysWAhz_jQ51q4xfaPUtq4II-HW2p6ZxhknPSyBDONlMr-NWOsVHshoUlEeEPdN31eLEnLRNNU6Ba3JNGDctP1y4nOzq214OqZETwOlwsL541Z_ZGGRZ047d3AhPF-eKR2I5qQ0D7AK6f_wWt-x84Y-vh1IAPr3OSeodggcNdOmEhsG0NXDFruMpXAA8Bvf_BcFDtYEdl96xgcBaRWQx7ZxhY5-091sk69TAmacoRX9F2mNVkFTl4dTfyJdbuGjCBjRINbIFawNnK1fxLmqertFtduUQb7h9EjacU6WYA5sinLfppHzO6FU8yqEFk",
+			"type": "string"
+		},
+		{
+			"key": "client_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "client_secret",
+			"value": "iQcrTGiRmjym24B94UNzTGubmig8jaKec2a3U1vt",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "be.test",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "def50200924f6e44bba03b83d8a7e4999166b24c34df8de14b1c1808a94e0136f9869867b7215af925795b30b79daf097578ac48f60358f9083eb79dcec832bead94a159547ad25ac569df4cd76ebecd0a6dcbb983a619aeec33daf2b9f70a0e5e3271c7e7aae6ce8823129044ee92235c81e91775e08abec7f1a24b2e332a8ef3e1ef2b807495814716fc3e76c87d5f18999878789acbcdabf619b344f1e0c84e994b73a998f1a66be4c637c15a3e11bcb045f5510d53f545c1c2b81b6063a434683853189d991d4f9a305d256f1b48e7da2598f2522dc7d4a223f61284e3c6310ffc674a811ef5faaa7c618785dd20112132d21e6c63eed33ac84a9c81120f47f8d864fbe634b48db316b7f9af2dad8f6830cd76bab9e68960239737264ff0dbc6accd41a34d4d5d03e7c1c40d5e98aaaca74c2ac35b11fd935b1888d07cd394d0d5341f702e7c3a3ebd1a8da4561750e6e261c6f13ac5ca330c71e8387179a5"
+		},
+		{
+			"key": "xsrf_token",
+			"value": "eyJpdiI6ImpudE0xTkdmQTlHWm1LdzE2V202bkE9PSIsInZhbHVlIjoib1pzTm8wOUJmcmlYaXRiYmJZb3NBUExPc3FXZlM2eEZjTVF1VTc2Yms0bW9jZXEvbUZuMFU2WEZBdmp6K29VbHMzMWFyc3pnQWh5Tkd1NFQvZ0xPYnQxVjVSZmF0T0tMY2JQNFRGd0RsRFh1L0UydDZvZ2Z1bisyNVM1SC9pSzciLCJtYWMiOiJmZGJhYzIzMmUxZjgzYWQwODI1YmFlZDIyMTM4OTJmMjkzMmI4NmJmYmIyYjc2NjNlOWIyNmNkNDJiYmIyNzU3IiwidGFnIjoiIn0="
+		}
+	]
+}
