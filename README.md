@@ -114,3 +114,10 @@ If the middleware('auth:api') is removed, everything works fine except the route
         }
     }
 ```
+Also tried Explicit BInding without success:
+
+```php
+// app\Providers\RouteServiceProvider.php
+
+Route::model('user', User::class);
+```
