@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -45,10 +46,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(User $user, $id)
     {
-        Log::info($user);
-        return response()->json($user);
+        return response()->json([
+            'class' => $user::class,
+            'user' => $user,
+            'fromAuth' => Auth::user(),
+            'id' => $id,
+            'fromId (spected)' => User::find($id),
+        ]);
     }
 
     /**
